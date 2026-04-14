@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "mcp-video": {
+      "command": "C:\\Users\\dahon\\anaconda3\\envs\\video_edit\\python.exe",
+      "args": ["-m", "mcp_video"],
+      "env": {
+        "PATH": "C:\\Users\\dahon\\anaconda3\\envs\\video_edit\\Lib\\site-packages\\static_ffmpeg\\bin\\win32;%PATH%"
+      }
+    }
+  }
+}

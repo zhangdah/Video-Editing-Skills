@@ -1,0 +1,37 @@
+# Video files (too large for git)
+*.mp4
+*.MP4
+*.mov
+*.MOV
+*.avi
+*.mkv
+*.mts
+*.MTS
+
+# Audio files
+*.mp3
+*.wav
+*.flac
+*.m4a
+*.aac
+
+# Source footage folders
+/LA/
+/Hawaii/
+
+# Output and intermediate files
+/output/
+/output_v2/
+/output_v6/
+/previews/
+/storyboards/
+/Hawaii_storyboards/
+/LA_storyboards/
+/final/
+
+# ML model files
+*.task
+
+# Python cache
+__pycache__/
+*.pyc
