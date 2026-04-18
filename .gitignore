@@ -1,4 +1,6 @@
-# Video files (too large for git)
+# =====================================================================
+# Media assets — never committed (too large, typically project-specific)
+# =====================================================================
 *.mp4
 *.MP4
 *.mov
@@ -7,31 +9,43 @@
 *.mkv
 *.mts
 *.MTS
-
-# Audio files
 *.mp3
 *.wav
 *.flac
 *.m4a
 *.aac
 
+# =====================================================================
+# Per-project work (not part of the shared skills hub)
+# =====================================================================
 # Source footage folders
 /LA/
 /Hawaii/
 
-# Output and intermediate files
+# Output / intermediates / previews
 /output/
-/output_v2/
-/output_v6/
+/output_*/
 /previews/
 /storyboards/
-/Hawaii_storyboards/
-/LA_storyboards/
+/*_storyboards/
 /final/
 
-# ML model files
-*.task
+# Personal project scripts — keep locally, don't share
+/annotate_demo.py
+/auto_keyframes.py
+/cursor_at.py
+/cursor_trail.json
+/detect_cursor.py
+/measure_ui.py
 
-# Python cache
+# =====================================================================
+# System & tooling
+# =====================================================================
+.DS_Store
 __pycache__/
 *.pyc
+*.pyo
+*.task          # ML model files
+.venv/
+.vscode/
+.idea/
