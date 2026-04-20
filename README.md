@@ -1,5 +1,7 @@
 # Video Editing Skills
 
+**English** | [简体中文](README.zh-CN.md)
+
 A collection of reusable [Cursor Skills](https://cursor.com/docs/agent/skills) for AI-assisted video editing workflows. Drop these skills into any project and let your coding agent (Cursor, Claude Code, or any MCP-compatible tool) drive the editing pipeline end-to-end.
 
 Each skill is a self-contained markdown file (plus optional template scripts and worked examples) that teaches the agent how to perform a specific class of video tasks: cutting and joining clips, beat-syncing music, annotating screen recordings with highlight boxes, etc.
@@ -104,6 +106,7 @@ The agent will follow the skill's phased workflow: gather requirements → confi
 ```
 Video-Editing-Skills/
 ├── README.md
+├── README.zh-CN.md
 ├── .gitignore                          # ignores video files + per-project work
 ├── .cursor/
 │   ├── mcp.json                        # MCP server registration (edit per platform)
