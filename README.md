@@ -1,6 +1,7 @@
 # Video Editing Skills
 
-**English** | [简体中文](README.zh-CN.md)
+[![English](https://img.shields.io/badge/lang-English-blue?style=flat-square&logo=googletranslate&logoColor=white)](README.md)
+[![简体中文](https://img.shields.io/badge/lang-简体中文-lightgrey?style=flat-square&logo=googletranslate&logoColor=white)](README.zh-CN.md)
 
 A collection of reusable [Cursor Skills](https://cursor.com/docs/agent/skills) for AI-assisted video editing workflows. Drop these skills into any project and let your coding agent (Cursor, Claude Code, or any MCP-compatible tool) drive the editing pipeline end-to-end.
 

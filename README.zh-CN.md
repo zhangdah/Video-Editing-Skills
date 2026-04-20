@@ -1,6 +1,7 @@
 # Video Editing Skills
 
-[English](README.md) | **简体中文**
+[![English](https://img.shields.io/badge/lang-English-lightgrey?style=flat-square&logo=googletranslate&logoColor=white)](README.md)
+[![简体中文](https://img.shields.io/badge/lang-简体中文-red?style=flat-square&logo=googletranslate&logoColor=white)](README.zh-CN.md)
 
 一套可复用的 [Cursor Skills](https://cursor.com/docs/agent/skills),用于 AI 辅助的视频剪辑工作流。把这些技能丢进任意项目,你的编码 Agent(Cursor、Claude Code,或任意兼容 MCP 的工具)就能端到端地驱动整条剪辑流水线。
 
