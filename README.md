@@ -15,8 +15,9 @@ Each skill is a self-contained markdown file (plus optional template scripts and
 |-------|--------------|-------------|
 | [`video-editing-workflow`](.cursor/skills/video-editing-workflow/SKILL.md) | Cuts, trims, and joins source footage; builds montages; adds BGM with beat-sync; applies transitions; exports to a chosen resolution. | Travel videos, montages, multi-clip edits with music. |
 | [`video-annotation-workflow`](.cursor/skills/video-annotation-workflow/SKILL.md) | Annotates an existing video with dynamic highlight boxes, captions, and dim-out overlays. Includes a coordinate-grid debug mode for fast box-alignment iteration with the user. | Product demos, tutorials, feature walkthroughs, screen-recording explainers. |
+| [`audio-vocal-boost`](.cursor/skills/audio-vocal-boost/SKILL.md) | Uses Meta's demucs (`htdemucs_ft`) to separate a video's audio into vocal and instrumental stems, applies user-specified gains in dB to each (with a brick-wall limiter), and muxes back into the original video without re-encoding the video stream. Stems are cached so re-tuning dB values takes ~3 seconds. | Make the singer / speaker louder, soften background music, isolate a karaoke vocal, "突出人声" tasks on existing footage. |
 
-Both skills share the same conda environment (`video_edit`) and FFmpeg binaries (`static-ffmpeg`).
+All skills share the same conda environment (`video_edit`) and FFmpeg binaries (`static-ffmpeg`).
 
 ---
 
@@ -65,6 +66,15 @@ conda install -c conda-forge liblzma    # needed by librosa
 
 `static-ffmpeg` provides self-contained `ffmpeg` and `ffprobe` binaries for macOS, Linux, and Windows — no system FFmpeg install required.
 
+#### Optional — extras for `audio-vocal-boost`
+
+```bash
+pip install demucs torchcodec
+conda install -c conda-forge -y ffmpeg   # supplies libavutil that torchcodec links to
+```
+
+Skip if you don't plan to use the `audio-vocal-boost` skill. The conda-forge `ffmpeg` is required because post-2.10 `torchaudio` loads files via `torchcodec`, which dynamically links against system FFmpeg shared libraries (`libavutil.*`).
+
 ### MCP Server Config
 
 The included [`.cursor/mcp.json`](.cursor/mcp.json) registers the `mcp-video` MCP server. **You must edit the `command` and `PATH` values** to match your platform and conda env location:
@@ -98,6 +108,12 @@ help align the boxes."
 
 → triggers `video-annotation-workflow`
 
+```
+"Boost the vocal in performance.mov by 6 dB and keep the music at 0 dB."
+```
+
+→ triggers `audio-vocal-boost`
+
 The agent will follow the skill's phased workflow: gather requirements → confirm with you → render → iterate.
 
 ---
@@ -114,12 +130,16 @@ Video-Editing-Skills/
 │   └── skills/
 │       ├── video-editing-workflow/
 │       │   └── SKILL.md
-│       └── video-annotation-workflow/
+│       ├── video-annotation-workflow/
+│       │   ├── SKILL.md
+│       │   ├── scripts/
+│       │   │   └── annotate_template.py    # generic renderer, customize CONSTANTS + SEGMENTS
+│       │   └── examples/
+│       │       └── kyc_demo_segments.py    # real-world SEGMENTS reference
+│       └── audio-vocal-boost/
 │           ├── SKILL.md
-│           ├── scripts/
-│           │   └── annotate_template.py    # generic renderer, customize CONSTANTS + SEGMENTS
-│           └── examples/
-│               └── kyc_demo_segments.py    # real-world SEGMENTS reference
+│           └── scripts/
+│               └── boost_vocal.py          # CLI: --vocal-db / --instr-db, caches stems
 ```
 
 Source media (`*.mp4`, `*.mov`, etc.), per-project scripts, and intermediate output folders are all gitignored — this repo only contains the reusable skills.

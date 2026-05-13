@@ -15,8 +15,9 @@
 |------|------|----------|
 | [`video-editing-workflow`](.cursor/skills/video-editing-workflow/SKILL.md) | 切割、修剪、拼接素材;制作混剪;按节拍同步 BGM;添加转场;输出指定分辨率。 | 旅行视频、混剪、多素材配乐剪辑。 |
 | [`video-annotation-workflow`](.cursor/skills/video-annotation-workflow/SKILL.md) | 给已有视频添加动态高亮框、字幕、暗化遮罩等标注。内置坐标网格调试模式,方便你和 Agent 快速对齐框位置。 | 产品演示、教程、功能 walkthrough、录屏讲解。 |
+| [`audio-vocal-boost`](.cursor/skills/audio-vocal-boost/SKILL.md) | 用 Meta 的 demucs(`htdemucs_ft`)把视频音频分离成人声/伴奏两轨,按用户指定的 dB 各自调音(自带防爆音 limiter),再合回原视频(视频流不重编)。stem 缓存后再调 dB 只要约 3 秒。 | 突出唱歌/讲话的人声、压低背景音乐、做卡拉 OK 提取伴奏、"vocal +N dB" 类需求。 |
 
-两个技能共用同一个 conda 环境(`video_edit`)和 FFmpeg 二进制(`static-ffmpeg`)。
+所有技能共用同一个 conda 环境(`video_edit`)和 FFmpeg 二进制(`static-ffmpeg`)。
 
 ---
 
@@ -64,6 +65,15 @@ conda install -c conda-forge liblzma    # librosa 依赖
 
 `static-ffmpeg` 自带 macOS、Linux、Windows 三平台的 `ffmpeg` 和 `ffprobe` 二进制 —— 不需要额外装系统级 FFmpeg。
 
+#### 可选 —— `audio-vocal-boost` 额外依赖
+
+```bash
+pip install demucs torchcodec
+conda install -c conda-forge -y ffmpeg   # 提供 torchcodec 需要链接的 libavutil
+```
+
+不用 `audio-vocal-boost` 技能可以跳过。装 conda-forge 的 `ffmpeg` 是因为 2.10 之后的 `torchaudio` 改用 `torchcodec` 读取文件,而后者会动态链接系统 FFmpeg 共享库(`libavutil.*`)。
+
 ### MCP Server 配置
 
 仓库自带的 [`.cursor/mcp.json`](.cursor/mcp.json) 注册了 `mcp-video` MCP 服务器。**你必须根据自己的平台和 conda 环境位置修改 `command` 与 `PATH`**:
@@ -96,6 +106,12 @@ conda install -c conda-forge liblzma    # librosa 依赖
 
 → 会触发 `video-annotation-workflow`
 
+```
+"把 performance.mov 里的 vocal 加 6dB,伴奏保持原音量。"
+```
+
+→ 会触发 `audio-vocal-boost`
+
 Agent 会按技能里规定的分阶段流程执行:收集需求 → 与你确认 → 渲染 → 迭代。
 
 ---
@@ -112,12 +128,16 @@ Video-Editing-Skills/
 │   └── skills/
 │       ├── video-editing-workflow/
 │       │   └── SKILL.md
-│       └── video-annotation-workflow/
+│       ├── video-annotation-workflow/
+│       │   ├── SKILL.md
+│       │   ├── scripts/
+│       │   │   └── annotate_template.py    # 通用渲染器,自定义 CONSTANTS + SEGMENTS
+│       │   └── examples/
+│       │       └── kyc_demo_segments.py    # 真实项目的 SEGMENTS 参考
+│       └── audio-vocal-boost/
 │           ├── SKILL.md
-│           ├── scripts/
-│           │   └── annotate_template.py    # 通用渲染器,自定义 CONSTANTS + SEGMENTS
-│           └── examples/
-│               └── kyc_demo_segments.py    # 真实项目的 SEGMENTS 参考
+│           └── scripts/
+│               └── boost_vocal.py          # CLI: --vocal-db / --instr-db,自动缓存 stem
 ```
 
 视频素材(`*.mp4`、`*.mov` 等)、各项目脚本、中间产物目录都被 gitignore —— 本仓库只包含可复用的技能本身。
